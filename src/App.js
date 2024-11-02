@@ -5,7 +5,6 @@
 */
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css"
-import React from 'react';
 import logo from './logo.svg'; // Adjust path as necessary
 import logo2 from './logo2.png'; // Your second logo if needed
 import './App.css';

@@ -3,7 +3,7 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 20vmin;
   pointer-events: none;
 }
 
@@ -15,7 +15,7 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: rgb(255, 255, 255);
 }
 
 .App-link {
@@ -31,20 +31,34 @@
   }
 }
 
-/* @font-face {
+@font-face {
   font-family: 'Cocomat Pro';
-  src: url('./path-to-your-font/CocomatPro-Bold.woff2') format('woff2'),
-       url('./path-to-your-font/CocomatPro-Bold.woff') format('woff');
-  font-weight: bol
+  src: url('/Users/rheathakur/Desktop/cocomat/Cocomat Light-trial.ttf') format('truetype');
+  font-weight: bol;
   font-style: normal;
-} */
+}
 
 .Header {
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Center items vertically */
   background-color: #f2f2f2; /* Light background */
   padding: 20px;
   color: #1f7ecb; /* Text color */
   text-transform: uppercase; /* All caps */
-  /* font-family: 'Cocomat Pro', sans-serif; /* Applying the font */
+  font-family: 'Cocomat Pro', sans-serif; /* Applying the font */
+}
+
+.Logo {
+  height: 50px; /* Set the height for the logo */
+  margin-right: 20px; /* Space between logo and heading */
+}
+
+.Header h1 {
+  margin: 0; /* Remove default margin for better alignment */
+}
+
+.Header nav {
+  margin-left: auto; /* Push navigation to the right */
 }
 
 .Header nav ul {

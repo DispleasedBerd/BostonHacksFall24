@@ -23,17 +23,6 @@ const Login = ({ onLogin }) => {
     console.log("Questionnaire submitted:", answers);
     // Here you could send the answers to a backend for storage
   };
-
-  return (
-    <div className="App">
-      {!isLoggedIn ? (
-        <Login onLogin={handleLogin} />
-      ) : (
-        <Questionnaire onSubmit={handleSubmitAnswers} />
-      )}
-    </div>
-  );
-
   return (
     <div>
       <h2>Login</h2>

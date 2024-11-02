@@ -42,4 +42,4 @@ const Questionnaire = ({ onSubmit }) => {
   );
 };
 
-export default Questionnaire;
+export default questionnaire;

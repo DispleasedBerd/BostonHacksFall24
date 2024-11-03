@@ -23,22 +23,8 @@ function Header() {
                     <li><a href="#about">About</a></li>
                     <li><a href="#contact">Contact</a></li>
                     <li><a href="#login">User Login</a></li>
-                    
-                    {/* <li><button onClick={LoginPopUp}>User Login</button></li> */}
-
-
-                    {/* <li><a href="#login">User Login</a></li> */}
-
                 </ul>
             </nav>
-            {/* <Login onLogin={}/> */}
-            {/* <Login/> */}
-            {/* <button onClick={<Login/>}>User Login</button> */}
-            {/*
-      first click on the login button in header to redirect to login (or just do a popup window)
-      after that, you just need your onLogin function so that it'll do something once you login
-      pass the onlogin function to the <Login /> component when called
-      */}
         </div>
     );
 }
@@ -47,7 +33,7 @@ function App() {
     return (
         <div className="App">
             <Header />
-            <h1 id="#login"><Login /></h1>
+            {/* <h1 id="#login"><Login /></h1> */}
             <MapContainer center={[42.3601, -71.0589]} zoom={13} scrollWheelZoom={false}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

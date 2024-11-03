@@ -5,10 +5,11 @@
 */
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css"
+import Papa from 'papaparse';
 import logo from './logo.svg'; // Adjust path as necessary
 import logo2 from './logo2.png'; // Your second logo if needed
 import './App.css';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Login from "./login";
 
 import { Icon, divIcon, point } from "leaflet";
@@ -65,6 +66,22 @@ const customIcon = new Icon({
   ];
 
 function App() {
+    const [markers, setMarkers] = useState([]);
+
+    useEffect(() => {
+        Papa.parse('/path/to/your/coordinates.csv', {
+            header: true,
+            download: true,
+            complete: (results) => {
+                const parsedData = results.data.map(item => ({
+                    geocode: [parseFloat(item.Latitude), parseFloat(item.Longitude)],
+                    services: [item['Service 1'], item['Service 2'], item['Service 3']].filter(Boolean), // filter out empty values
+                    popUp: `Location: ${item.Latitude}, ${item.Longitude}`
+                }));
+                setMarkers(parsedData);
+            }
+        });
+    }, []);
     return (
         <div className="App">
             <Header />

@@ -48,9 +48,27 @@ def get_coordinates(address):
         return get_coordinates(address)  # Retry in case of timeout
     return (None, None)
 
+def save_data_to_csv(data, output_file_path):
+    """
+    Save the data dictionary to a CSV file.
+    
+    Parameters:
+    - data (dict): The data dictionary.
+    - output_file_path (str): The path for the output CSV file.
+    """
+    # Convert the dictionary into a DataFrame
+    df = pd.DataFrame.from_dict(data, orient='index')
+    
+    # Set column names if needed (adjust based on data structure)
+    df.columns = [f'Column_{i+1}' for i in range(df.shape[1])]
+
+    # Save DataFrame to CSV
+    df.to_csv(output_file_path, index_label="Variable")
+
 if __name__ == "__main__":
     # Step 1: Load the Excel file
     excel_file_path = r"C:\Users\tiaro\OneDrive\BostonHacks 2024\BostonHacksFall24\src\Urban Refuge Aid Services.xlsx"
+    output_csv_path = r"C:\Users\tiaro\OneDrive\BostonHacks 2024\BostonHacksFall24\src\Updated_Urban_Refuge_Aid_Services.csv"
 
     # Load data from the Excel file
     data = load_excel_data(excel_file_path)
@@ -62,5 +80,7 @@ if __name__ == "__main__":
             latitude, longitude = get_coordinates(address)
             value.extend([latitude, longitude])
 
-    # Print updated data with coordinates
-    print(data)
+    # Step 3: Save the updated data to a CSV file
+    save_data_to_csv(data, output_csv_path)
+
+    print(f"Data with coordinates has been saved to {output_csv_path}")

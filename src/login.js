@@ -1,13 +1,14 @@
 // src/Login.js
 import React, { useState } from "react";
 
-const Login = ({ onLogin }) => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onLogin(username, password);
+    handleLogin(username, password);
   };
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
@@ -25,8 +26,11 @@ const Login = ({ onLogin }) => {
   };
   return (
     <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <div className='modal'>
+        <div className='content'>
+          Login
+        </div>
+        {/* <form onSubmit={handleSubmit}>
         <div>
           <label>Username:</label>
           <input
@@ -44,9 +48,16 @@ const Login = ({ onLogin }) => {
           />
         </div>
         <button type="submit">Login</button>
-      </form>
-    </div>
+      </form>*/}
+        <div> 
+          <button onClick=
+            {() => close()}>
+            Close modal
+          </button>
+        </div>
+      </div>
+    </div >
   );
-};
+}
 
 export default Login;

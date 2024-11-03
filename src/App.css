@@ -33,7 +33,7 @@
 
 @font-face {
   font-family: 'Cocomat Pro';
-  src: url('/Users/rheathakur/Desktop/cocomat/Cocomat Light-trial.ttf') format('truetype');
+  src: url('../public/Cocomat Light-trial.ttf') format('truetype');
   font-weight: bol;
   font-style: normal;
 }

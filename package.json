@@ -12,8 +12,10 @@
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
     "react-scripts": "5.0.1",
+    "xlsx": "^0.18.5",
     "reactjs-popup": "^2.0.6",
     "web-vitals": "^2.1.4"
+
   },
   "scripts": {
     "start": "react-scripts start",

@@ -41,7 +41,7 @@
 .Header {
   display: flex; /* Use flexbox for layout */
   align-items: center; /* Center items vertically */
-  background-color: #f2f2f2; /* Light background */
+  background-color: #ffff; /* Light background */
   padding: 20px;
   color: #1f7ecb; /* Text color */
   text-transform: uppercase; /* All caps */
@@ -88,7 +88,7 @@
 }
 
 #root {
-  height: 200vh;
+  height: 220vh;
   display: flex;
   align-items: left;
   justify-content: center;

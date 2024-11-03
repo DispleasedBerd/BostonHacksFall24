@@ -3,6 +3,8 @@ import sqlite3
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
 import time 
+import json
+from flask import Flask
 
 def load_excel_data(file_path):
     """
@@ -48,6 +50,20 @@ def get_coordinates(address):
         return get_coordinates(address)  # Retry in case of timeout
     return (None, None)
 
+def wrapper_coordinates(file_path):
+    data = load_excel_data(file_path)
+    coordinates = {}
+
+    for key, value in data.items():
+        address = value[5]  # Assuming the address is at index 5
+        if address:
+            latitude, longitude = get_coordinates(address)
+            coordinates[key] = (latitude, longitude)
+    return coordinates
+    
+
+
+
 def save_data_to_csv(data, output_file_path):
     """
     Save the data dictionary to a CSV file.
@@ -66,21 +82,19 @@ def save_data_to_csv(data, output_file_path):
     df.to_csv(output_file_path, index_label="Variable")
 
 if __name__ == "__main__":
-    # Step 1: Load the Excel file
-    excel_file_path = r"C:\Users\tiaro\OneDrive\BostonHacks 2024\BostonHacksFall24\src\Urban Refuge Aid Services.xlsx"
-    output_csv_path = r"C:\Users\tiaro\OneDrive\BostonHacks 2024\BostonHacksFall24\src\Updated_Urban_Refuge_Aid_Services.csv"
 
-    # Load data from the Excel file
-    data = load_excel_data(excel_file_path)
+    excel_file_path = r"C:\Boston Hacks Fall 24\BostonHacksFall24\src\Urban Refuge Aid Services.xlsx"
+    output_csv_path = r"Updated_Urban_Refuge_Aid_Services.csv"
 
-    # Step 2: Add latitude and longitude to each address in the data dictionary
-    for key, value in data.items():
-        address = value[5]  # Assuming the address is at index 5
-        if address:
-            latitude, longitude = get_coordinates(address)
-            value.extend([latitude, longitude])
+    key = 'The Immigrant Learning Center'
+    coords = wrapper_coordinates(excel_file_path)
+    
+    with open("src/coordinates.json", "w") as outfile: 
+        json.dump(coords, outfile)
 
+
+    
     # Step 3: Save the updated data to a CSV file
-    save_data_to_csv(data, output_csv_path)
+    #save_data_to_csv(data, output_csv_path)
 
-    print(f"Data with coordinates has been saved to {output_csv_path}")
+    #print(f"Data with coordinates has been saved to {output_csv_path}")

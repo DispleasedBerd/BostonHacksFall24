@@ -12,6 +12,7 @@ import './App.css';
 import React, { useEffect, useState } from "react";
 import Login from "./login";
 import { Icon, divIcon, point } from "leaflet";
+import coordinates from "./coordinates.json"
 
 
 
@@ -37,43 +38,32 @@ const customIcon = new Icon({
     // iconUrl: "https://cdn-icons-png.flaticon.com/512/447/447031.png",
     iconUrl: require("./icons/placeholder.png"),
     iconSize: [38, 38] // size of the icon
-  });
-  
-  // custom cluster icon
-  const createClusterCustomIcon = function (cluster) {
+});
+
+// custom cluster icon
+const createClusterCustomIcon = function (cluster) {
     return new divIcon({
-      html: `<span class="cluster-icon">${cluster.getChildCount()}</span>`,
-      className: "custom-marker-cluster",
-      iconSize: point(33, 33, true)
+        html: `<span class="cluster-icon">${cluster.getChildCount()}</span>`,
+        className: "custom-marker-cluster",
+        iconSize: point(33, 33, true)
     });
-  };
-// function parseMarkers(){
-//     const filePath = 'Updated_Urban_Refuge_Aid_Services.csv';
+};
+function parseMarkers() {
+    // const file_path = 'coordinates.json';
+    const coords = JSON.parse(coordinates);
+    console.log(coords);
+    // const markers = new Array();
+    // JSON.parse(filePath, (key,value) => 
+    //     markers.push({
+    //         geocode: value,
+    //         popUp: key
+    //     })
+    // );
+}
+//locations
+const locations = new Array({ lat: 42.26861281372227, long: -71.09347770697872 }, { lat: 42.26861281372227, long: -71.19347770697872 }); //read the excel for the data
 
-//     const response = fetch(filePath);
-//     const text = response.text();
-
-//     // Parse the CSV data
-//     const data = Papa.parse(text, {
-//         header: true, // Set to true to parse the first row as headers
-//         skipEmptyLines: true, // Skip empty lines
-//     });
-
-//     // Access the parsed data as an array of objects
-//     const arrayData = data.data; // This is your array
-//     console.log(arrayData);
-
-// }
-  //locations
-  const locations = new Array({lat: 42.26861281372227, long: -71.09347770697872}, {lat: 42.26861281372227, long: -71.19347770697872}); //read the excel for the data
-  const markers = new Array();
-  for (let i =0; i < locations.length; i++){
-    markers.push({
-        geocode:[locations[i].lat,locations[i].long], 
-        popUp: i
-    });
-  } 
-  // markers
+// markers
 //   const markers = [
 //     {
 //       geocode: [42.26861281372227, -71.09347770697872],
@@ -109,7 +99,7 @@ function App() {
     return (
         <div className="App">
             <Header />
-           
+
             <MapContainer center={[42.3601, -71.0589]} zoom={13} scrollWheelZoom={false}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -121,23 +111,23 @@ function App() {
                     </Popup>-
                 </Marker> */}
                 {/* Mapping through the markers */}
-                {markers.map((marker) => (
-                <Marker position={marker.geocode} icon={customIcon}>
-                    <Popup>{marker.popUp}</Popup>
-                </Marker>
+                {parseMarkers().map((marker) => (
+                    <Marker position={marker.geocode} icon={customIcon}>
+                        <Popup>{marker.popUp}</Popup>
+                    </Marker>
                 ))}
             </MapContainer>
             <h1 id="#login"><Login /></h1>
         </div>
     );
 }
-function OnLoginClick() {
-    return (
-        <p>
-            youve logged in :)
-        </p>
-    );
-}
+// function OnLoginClick() {
+//     return (
+//         <p>
+//             youve logged in :)
+//         </p>
+//     );
+// }
 
 // function HandleLogin(username, password){
 //   // Here, you can add validation or connect to a backend for verification

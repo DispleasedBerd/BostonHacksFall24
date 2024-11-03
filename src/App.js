@@ -10,8 +10,6 @@ import logo2 from './logo2.png'; // Your second logo if needed
 import './App.css';
 import React, { useState } from "react";
 import Login from "./login";
-import Lopup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
 
 
 function Header() {
@@ -49,7 +47,7 @@ function App() {
     return (
         <div className="App">
             <Header />
-            <h1 id="#login"></h1>
+            <h1 id="#login"><Login /></h1>
             <MapContainer center={[42.3601, -71.0589]} zoom={13} scrollWheelZoom={false}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -64,12 +62,6 @@ function App() {
         </div>
     );
 }
-
-// function LoginPopUp(){
-//     return(
-
-//     );
-// }
 function OnLoginClick() {
     return (
         <p>

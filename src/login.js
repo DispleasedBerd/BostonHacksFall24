@@ -26,11 +26,10 @@ const Login = () => {
   };
   return (
     <div>
-      <div className='modal'>
         <div className='content'>
           Login
         </div>
-        {/* <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
         <div>
           <label>Username:</label>
           <input
@@ -48,14 +47,7 @@ const Login = () => {
           />
         </div>
         <button type="submit">Login</button>
-      </form>*/}
-        <div> 
-          <button onClick=
-            {() => close()}>
-            Close modal
-          </button>
-        </div>
-      </div>
+      </form>  
     </div >
   );
 }

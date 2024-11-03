@@ -11,7 +11,6 @@ import logo2 from './logo2.png'; // Your second logo if needed
 import './App.css';
 import React, { useEffect, useState } from "react";
 import Login from "./login";
-
 import { Icon, divIcon, point } from "leaflet";
 
 
@@ -49,21 +48,30 @@ const customIcon = new Icon({
     });
   };
   
+  //locations
+  const locations = new Array({lat: 42.26861281372227, long: -71.09347770697872}, {lat: 42.26861281372227, long: -71.19347770697872}); //read the excel for the data
+  const markers = new Array();
+  for (let i =0; i < locations.length; i++){
+    markers.push({
+        geocode:[locations[i].lat,locations[i].long], 
+        popUp: i
+    });
+  } 
   // markers
-  const markers = [
-    {
-      geocode: [42.26861281372227, -71.09347770697872],
-      popUp: "Hello, I am pop up 1"
-    },
-    {
-      geocode: [42.26861281372227, -71.19347770697872],
-      popUp: "Hello, I am pop up 2"
-    },
-    {
-      geocode: [42.26861281372227, -71.29347770697872],
-      popUp: "Hello, I am pop up 3"
-    }
-  ];
+//   const markers = [
+//     {
+//       geocode: [42.26861281372227, -71.09347770697872],
+//       popUp: "Hello, I am pop up 1"
+//     },
+//     {
+//       geocode: [42.26861281372227, -71.19347770697872],
+//       popUp: "Hello, I am pop up 2"
+//     },
+//     {
+//       geocode: [42.26861281372227, -71.29347770697872],
+//       popUp: "Hello, I am pop up 3"
+//     }
+//   ];
 
 function App() {
     const [markers, setMarkers] = useState([]);
@@ -94,7 +102,7 @@ function App() {
                 {/* <Marker position={[42.26861281372227, -71.09347770697872]} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}>
                     <Popup>
                         A pretty CSS3 popup. <br /> Easily customizable.
-                    </Popup>
+                    </Popup>-
                 </Marker> */}
                 {/* Mapping through the markers */}
                 {markers.map((marker) => (

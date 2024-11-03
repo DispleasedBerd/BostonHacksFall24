@@ -47,7 +47,23 @@ const customIcon = new Icon({
       iconSize: point(33, 33, true)
     });
   };
-  
+// function parseMarkers(){
+//     const filePath = 'Updated_Urban_Refuge_Aid_Services.csv';
+
+//     const response = fetch(filePath);
+//     const text = response.text();
+
+//     // Parse the CSV data
+//     const data = Papa.parse(text, {
+//         header: true, // Set to true to parse the first row as headers
+//         skipEmptyLines: true, // Skip empty lines
+//     });
+
+//     // Access the parsed data as an array of objects
+//     const arrayData = data.data; // This is your array
+//     console.log(arrayData);
+
+// }
   //locations
   const locations = new Array({lat: 42.26861281372227, long: -71.09347770697872}, {lat: 42.26861281372227, long: -71.19347770697872}); //read the excel for the data
   const markers = new Array();
@@ -74,22 +90,22 @@ const customIcon = new Icon({
 //   ];
 
 function App() {
-    const [markers, setMarkers] = useState([]);
+    // const [markers, setMarkers] = useState([]);
 
-    useEffect(() => {
-        Papa.parse('/path/to/your/coordinates.csv', {
-            header: true,
-            download: true,
-            complete: (results) => {
-                const parsedData = results.data.map(item => ({
-                    geocode: [parseFloat(item.Latitude), parseFloat(item.Longitude)],
-                    services: [item['Service 1'], item['Service 2'], item['Service 3']].filter(Boolean), // filter out empty values
-                    popUp: `Location: ${item.Latitude}, ${item.Longitude}`
-                }));
-                setMarkers(parsedData);
-            }
-        });
-    }, []);
+    // useEffect(() => {
+    //     Papa.parse('.\Updated_Urban_Refuge_Aid_Services.csv', {
+    //         header: true,
+    //         download: true,
+    //         complete: (results) => {
+    //             const parsedData = results.data.map(item => ({
+    //                 geocode: [parseFloat(item.Latitude), parseFloat(item.Longitude)],
+    //                 // services: [item['Service 1'], item['Service 2'], item['Service 3']].filter(Boolean), // filter out empty values
+    //                 popUp: `Location: ${item.Latitude}, ${item.Longitude}`
+    //             }));
+    //             setMarkers(parsedData);
+    //         }
+    //     });
+    // }, []);
     return (
         <div className="App">
             <Header />

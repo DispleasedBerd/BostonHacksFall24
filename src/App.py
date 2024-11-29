@@ -1,11 +1,14 @@
 import pandas as pd
 import sqlite3
-import requests
-import time
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
+import time 
+import json
+from flask import Flask
+from flask_cors import CORS
 
-geolocator = Nominatim(user_agent="abcd")
+app = Flask(__name__)
+CORS(app)
 
 def load_excel_data(file_path):
     """
@@ -28,89 +31,58 @@ def load_excel_data(file_path):
         key = row.iloc[0]  # Get the first column value as the variable name
         value = row.iloc[1:]  # Get the rest of the row as the variable value
         variables[key] = value.tolist()  # Store as a list in the dictionary
-
+    #print(variables)
     return variables
 
+#@app.route('/getCoordinates')
+def get_json_coordinates():
+    return [{"label": "The Immigrant Learning Center", "coordinates": [42.4271186, -71.0671071]}, {"label": "Immigrant Family Services Institute ", "coordinates": [42.286217, -71.0906896]}]
+                           #"Rian Immigrant Center": [42.3527552, -71.0584604224359], "International Institute of New England": [None, None], "Action for Boston Community Development": [42.3520191, -71.0629688], "East Boston Community Council": [42.376546950000005, -71.03944463124805], "Catholic Charities Boston": [42.338818849999996, -71.05135479834671], "Jewish Vocational Service": [None, None], "MassHire Downtown Boston Career Center": [None, None], "East Boston Community Soup Kitchen": [42.37005765, -71.04019203482005], "Roslindale Food Collective": [None, None], "Fair Foods: First Parish Church": [42.30819395, -71.06204429421979], "Project Citizenship": [None, None], "Refugee & Immigrant Assistance Center (RIAC)": [42.3304191, -71.0934607062716], "Mass Office for Refugees and Immigrants (ORI)": [None, None], "Kids in Need of Defense (KIND)": [None, None], "Boston Healthcare for the Homeless": [42.333645250000004, -71.07279114401811], "Centro Presente": [None, None], "Boston Center for Refugee Health & Human Rights (program of Immigrant and Refugee Health Center at Boston Medical Center)": [None, None], "U.S. Committee for Refugees and Immigrants": [46.3144754, 11.0480288], "Massachusetts Alliance of Portuguese Speakers (MAPS)": [None, None], "Greater Boston Food Bank": [42.334405149999995, -71.06583269114233], "Brazillian Worker Center (BWC)": [42.3552369, -71.1324104], "NeighborHealth (formerly East Boston Community Health Center)": [None, None], "MIRA (Massachusetts Immigrant and Refugee Advocacy Coalition)": [None, None], "Center to Support Immigrant Organizing": [None, None], "Greater Boston Legal Services": [42.3638865390222, -71.06021109003544], "YMCA Mobile Markets": [None, None], "Waldo Immigration and Refugee Services Inc": [42.3304191, -71.0934607062716], "African Community Economic Development of New England (ACEDONE)": [None, None], "Political Asylum Immigration Representation Project (PAIR) ": [None, None]}]}
 
-def extract_addresses(data, address_index):
+@app.route('/getCoordinates')
+def get_coordinates():
+    file_path = r".\src\Urban Refuge Aid Services.xlsx"
+    #print("here")
+    coordinates = wrapper_coordinates(file_path)
+    #print(coordinates)
+    return coordinates
+
+def wrapper_coordinates(file_path):
+    data = load_excel_data(file_path)
+    services = []
+
+    for key, value in data.items():
+        #print(key)
+        address = value[5]  # Assuming the address is at index 5
+        if address:
+            coordinates = find_coordinates(address)
+            if coordinates[0] != None:
+                services.append({"label": key, "coordinates": coordinates})
+            else:
+                print(key)
+    return services
+
+def find_coordinates(address):
     """
-    Extract addresses from the data dictionary based on the specified index.
-
-    Parameters:
-    - data (dict): The data dictionary with addresses.
-    - address_index (int): The index in the list that corresponds to the address.
-
-    Returns:
-    - list: A list of addresses.
-    """
-    addresses = []
-    for values in data.values():
-        if len(values) > address_index:  # Ensure the index exists in the values
-            addresses.append(values[address_index])  # Append the address
-    return addresses
-
-
-def get_coordinates(address, retries=3, delay=2):
-    """
-    Get the latitude and longitude of an address using geopy (Nominatim).
-
+    Get the latitude and longitude for a given address.
+    
     Parameters:
     - address (str): The address to geocode.
-
+    
     Returns:
-    - tuple: A tuple of (latitude, longitude), or (None, None) if the address could not be found.
+    - tuple: A tuple (latitude, longitude) if successful, else (None, None).
     """
-    for attempt in range(retries):
-        try:
-            location = geolocator.geocode(address, timeout=10)
-            if location:
-                return (location.latitude, location.longitude)
-            else:
-                print(f"Coordinates not found for address: {address}")
-                return (None, None)
-        except GeocoderTimedOut:
-            print(f"Geocoding timed out for address: {address} - retrying in {delay} seconds")
-            time.sleep(delay)
-            delay *= 2  # Exponential backoff: double the delay
-        except Exception as e:
-            print(f"An error occurred: {e}")
-            return (None, None)
-
-    print(f"Failed to get coordinates for address: {address} after {retries} attempts")
+    geolocator = Nominatim(user_agent="abcd")
+    try:
+        location = geolocator.geocode(address, timeout=10)
+        if location:
+            return (location.latitude, location.longitude)
+    except GeocoderTimedOut:
+        time.sleep(1)
+        return get_coordinates(address)  # Retry in case of timeout
     return (None, None)
 
 
-def add_coordinates_to_addresses(addresses):
-    """
-    Add coordinates (latitude and longitude) to each address in the address list.
-
-    Parameters:
-    - addresses (list): A list of addresses.
-
-    Returns:
-    - list: A list of tuples containing (address, latitude, longitude).
-    """
-    coordinates_list = []
-    for address in addresses:
-        #print(f"Getting coordinates for: {address}")
-        lat, lon = get_coordinates(address)
-        coordinates_list.append((address, lat, lon))
-        #print(f"Latitude: {lat}, Longitude: {lon}")
-    return coordinates_list
-
 
 if __name__ == "__main__":
-    # Step 1: Load the Excel file
-    excel_file_path = r"C:\Users\tiaro\AppData\Roaming\Microsoft\Windows\Network Shortcuts\urban refuge data_copy.xlsx"
-
-    # Load data from the Excel file
-    data = load_excel_data(excel_file_path)
-
-    # Step 2: Extract addresses (assuming addresses are located at index 5)
-    address_index = 5  # Set this to the appropriate index for addresses
-    addresses = extract_addresses(data, address_index)
-
-    # Step 3: Add coordinates to addresses
-    coordinates = add_coordinates_to_addresses(addresses)
-
-
+    app.run(debug=True)

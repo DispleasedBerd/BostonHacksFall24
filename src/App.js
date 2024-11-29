@@ -7,14 +7,11 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css"
 import Papa from 'papaparse';
 import logo from './logo.svg'; // Adjust path as necessary
-import logo from './logo.png';
+import logo2 from './logo.png';
 import './App.css';
 import React, { useEffect, useState } from "react";
 import Login from "./login";
 import { Icon, divIcon, point } from "leaflet";
-import coordinates from "./coordinates.json"
-
-
 
 function Header() {
 
